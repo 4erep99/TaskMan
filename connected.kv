@@ -1,0 +1,89 @@
+<Connected>:
+    on_enter: root.get_tasks_from_db()
+    canvas:
+        Color:
+            rgba: (1, 1, 1, .7)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+        padding: [10,50,10,50]
+        Label:
+            text: u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435\u0020\u0442\u0435\u043A\u0441\u0442\u0020\u0437\u0430\u043C\u0435\u0442\u043A\u0438"
+            #Введите текст заметки
+            font_size: 24
+            color: 0, 0, 0, 1
+            size_hint_y: .1
+            pos_hint: {'center_x': .5}
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .2
+            TextInput:
+                id: task_input
+                multiline:True
+                font_size: 20
+                padding: [5, 0]
+            Button:
+                text: 'Voice'
+                on_press: root.get_voice_text()
+                size_hint_x: .1
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, .5
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            spacing: 20
+            Button:
+                text: u"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C\u0020\u0437\u0430\u043C\u0435\u0442\u043A\u0443"
+                #Добавить заметку
+                font_size: 24
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, .5
+                on_press: root.add_task(task_input.text); task_input.text = "";
+            Button:
+                text: u"\u0421\u043C\u0435\u043D\u0438\u0442\u044C\u0020\u0430\u043A\u043A\u0430\u0443\u043D\u0442"
+                #Сменить аккаунт
+                font_size: 24
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, .5
+                on_press: root.disconnect()
+        ScrollView:
+            bar_width: 4
+            scroll_type: ['bars']
+            bar_inactive_color: 5, 20, 10, .5
+            bar_color: 5, 10, 15, .8
+            size_hint_y: .5
+            BoxLayout:
+                orientation: 'vertical'
+                id: task
+                size_hint_y: None
+                height: self.minimum_height
+
+<TaskLabel>:
+    size_hint_y: None
+    height: 50
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+    orientation: 'horizontal'
+    Label:
+        id: root.id + "_label"
+        text_size: (self.width-20, self.height)
+        halign: 'left'
+        valign: 'middle'
+        text: str(app.TaskText)
+        font_size: 24
+        color: 0, 0, 0, 1
+        #on_press: self.text = "[s]" + self.text + "[/s]"
+    Button:
+        text: "X"
+        font_size: 24
+        color: 0, 0, 0, 1
+        size_hint: (.1, 1)
+        background_color: 1, 1, 1, 0
+        on_press: root.remove_task(root.id); root.parent.remove_widget(root)
